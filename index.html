@@ -1,19 +1,210 @@
 <!DOCTYPE html>
-<html>
+<html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <title>ホワサバ計算ツール</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ホワイトアウトサバイバル　建造計算ツール</title>
+
+<style>
+body {
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  padding: 12px;
+  max-width: 600px;
+  margin: auto;
+  background: #f5f7fa;
+}
+
+/* ヘッダー */
+.header {
+  margin-bottom: 10px;
+}
+.title {
+  font-size: 18px;
+  font-weight: bold;
+}
+.meta {
+  font-size: 12px;
+  color: #777;
+}
+
+/* テーブル */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 10px;
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+th, td {
+  border-bottom: 1px solid #eee;
+  padding: 6px;
+  font-size: 12px;
+}
+
+/* 入力UI統一 */
+select, input {
+  width: 100%;
+  padding: 6px;
+  font-size: 14px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  box-sizing: border-box;
+}
+
+/* ボタン */
+button {
+  padding: 10px;
+  width: 100%;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+}
+
+/* セクション */
+.section {
+  background: white;
+  padding: 10px;
+  border-radius: 10px;
+  margin-bottom: 12px;
+}
+
+/* 横並び */
+.inline {
+  display: flex;
+  gap: 10px;
+}
+
+/* バフ説明 */
+.info {
+  font-size: 11px;
+  color: #777;
+  margin-bottom: 6px;
+}
+
+/* 結果 */
+.result {
+  display: grid;
+  gap: 10px;
+}
+
+.card {
+  background: white;
+  padding: 12px;
+  border-radius: 10px;
+}
+
+.time {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+/* 資源 */
+.resources {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  font-size: 13px;
+}
+
+/* コピー */
+.copy-box {
+  margin-top: 10px;
+}
+
+textarea {
+  width: 100%;
+  height: 110px;
+  font-size: 12px;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+}
+
+/* フッター */
+.footer {
+  text-align: center;
+  font-size: 11px;
+  color: #888;
+  margin-top: 10px;
+}
+</style>
 </head>
+
 <body>
 
-<h1>建造時間計算</h1>
+<div class="header">
+  <div class="title">ホワイトアウトサバイバル　建造計算ツール</div>
+  <div class="meta">Version 1.0.0</div>
+</div>
 
-<input id="time" placeholder="秒">
-<input id="speed" placeholder="加速%">
+<table>
+<thead>
+<tr>
+<th>建物</th><th>開始</th><th>終了</th><th></th>
+</tr>
+</thead>
+<tbody id="tbody"></tbody>
+</table>
+
+<button onclick="addRow()">＋追加</button>
+
+<div class="section">
+
+<label>基礎バフ (%)</label>
+<input id="baseBuff" type="number" value="80.8">
+
+<label>ジンマン</label>
+<select id="jinman"></select>
+<div id="jinmanInfo" class="info"></div>
+
+<label>ハイエナ</label>
+<select id="pet"></select>
+<div id="petInfo" class="info"></div>
+
+<label>副執政官</label>
+<select id="sub">
+<option value="0">なし</option>
+<option value="10">+10%</option>
+<option value="15">+15%</option>
+</select>
+
+<div class="inline">
+<label><input type="checkbox" id="lord">領主司令 (+20%)</label>
+<label><input type="checkbox" id="gov">執政官スキル (+10%)</label>
+</div>
+
+<label>アグネス</label>
+<select id="agnes"></select>
+<div id="agnesInfo" class="info"></div>
+
+</div>
+
 <button onclick="calc()">計算</button>
 
-<div id="result"></div>
+<div class="result">
+
+<div class="card">
+<div class="time" id="result">--</div>
+</div>
+
+<div class="card resources" id="detail"></div>
+
+<div class="card copy-box">
+<button onclick="copyResult()">📋 コピー（ゲームチャット用）</button>
+<textarea id="copyText" readonly placeholder="ここにコピー用テキストが表示されます"></textarea>
+</div>
+
+</div>
+
+<div class="footer">
+© #3352 ヒゲのアニキ
+</div>
 
 <script src="app.js"></script>
+
 </body>
 </html>
