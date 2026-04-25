@@ -59,6 +59,19 @@ function updateBuffInfo(){
 }
 
 // =============================
+// 基礎バフ調整
+// =============================
+function adjustBuff(delta){
+  const input = document.getElementById("baseBuff");
+  let val = Number(input.value) || 0;
+
+  val += delta;
+
+  // 小数1桁に整形
+  input.value = Math.round(val * 10) / 10;
+}
+
+// =============================
 // 行追加
 // =============================
 function addRow(){
@@ -81,7 +94,6 @@ function initRow(tr){
   const s=tr.querySelector(".s");
   const e=tr.querySelector(".e");
 
-  // ★ デフォルト空
   b.add(new Option("選択",""));
 
   const ids=[...new Set(buildingData.map(x=>x.building_id))];
@@ -130,7 +142,7 @@ function filterEnd(s,e){
 
 // =============================
 function getBuff(){
-  const base=Number(baseBuff.value);
+  const base=Number(baseBuff.value) || 0;
 
   const jinLv=Number(jinman.value);
   const petLv=Number(pet.value);
@@ -170,7 +182,7 @@ function calc(){
     const s=Number(tr.querySelector(".s").value);
     const e=Number(tr.querySelector(".e").value);
 
-    if(!id || !s || !e) return; // ★ 空行スキップ
+    if(!id || !s || !e) return;
 
     const rows=buildingData.filter(r=>
       r.building_id===id &&
@@ -210,7 +222,6 @@ function calc(){
 火晶：${res.fire.toLocaleString()}
 錬成火晶：${res.refined.toLocaleString()}`;
 
-  // ★ コピー用テキスト
   copyText.value =
 `【建造時間】
 ${timeText}

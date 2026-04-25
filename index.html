@@ -64,6 +64,34 @@ button {
   font-size: 15px;
 }
 
+.buff-buttons {
+  display: flex;
+  gap: 6px;
+  margin-top: 6px;
+  flex-wrap: wrap;
+}
+
+.buff-buttons button {
+  flex: 1;
+  min-width: 48px;
+
+  padding: 4px 6px;
+  font-size: 12px;
+
+  background: #f1f3f5;
+  color: #333;
+
+  border: 1px solid #ddd;
+  border-radius: 6px;
+
+  cursor: pointer;
+}
+
+/* 押したとき */
+.buff-buttons button:active {
+  background: #e0e3e7;
+}
+
 /* セクション */
 .section {
   background: white;
@@ -155,7 +183,15 @@ textarea {
 <div class="section">
 
 <label>基礎バフ (%)</label>
-<input id="baseBuff" type="number" value="80.8">
+<input id="baseBuff" type="number" value="80" step="0.1">
+<div class="buff-buttons">
+  <button type="button" onclick="adjustBuff(-10)">-10</button>
+  <button type="button" onclick="adjustBuff(-1)">-1</button>
+  <button type="button" onclick="adjustBuff(-0.1)">-0.1</button>
+  <button type="button" onclick="adjustBuff(0.1)">+0.1</button>
+  <button type="button" onclick="adjustBuff(1)">+1</button>
+  <button type="button" onclick="adjustBuff(10)">+10</button>
+</div>
 
 <label>ジンマン</label>
 <select id="jinman"></select>
