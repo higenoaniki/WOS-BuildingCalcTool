@@ -10,6 +10,39 @@ const buildingNames = {
   B007:"軍医所", B008:"戦争学園"
 };
 
+const resourceMeta = [
+  {
+    key: "wood",
+    label: "木",
+    icon: "https://gom-s3-user-avatar.s3.us-west-2.amazonaws.com/wp-content/uploads/2023/05/item_icon_103.png"
+  },
+  {
+    key: "meat",
+    label: "肉",
+    icon: "https://gom-s3-user-avatar.s3.us-west-2.amazonaws.com/wp-content/uploads/2025/06/10114534/item_icon_100011.png"
+  },
+  {
+    key: "coal",
+    label: "石炭",
+    icon: "https://gom-s3-user-avatar.s3.us-west-2.amazonaws.com/wp-content/uploads/2025/06/10114623/item_icon_100031.png"
+  },
+  {
+    key: "iron",
+    label: "鉄",
+    icon: "https://gom-s3-user-avatar.s3.us-west-2.amazonaws.com/wp-content/uploads/2023/05/item_icon_105.png"
+  },
+  {
+    key: "fire",
+    label: "火晶",
+    icon: "https://gom-s3-user-avatar.s3.us-west-2.amazonaws.com/wp-content/uploads/2023/07/item_icon_100081.png"
+  },
+  {
+    key: "refined",
+    label: "錬成火晶",
+    icon: "https://gom-s3-user-avatar.s3.us-west-2.amazonaws.com/wp-content/uploads/2025/05/21122055/item_icon_100082.png"
+  }
+];
+
 // =============================
 // 初期ロード
 // =============================
@@ -214,13 +247,18 @@ function calc(){
 
   result.innerText="合計時間 "+timeText;
 
-  detail.innerHTML=
-`肉：${formatM(res.meat)}
-木：${formatM(res.wood)}
-石炭：${formatM(res.coal)}
-鉄：${formatM(res.iron)}
-火晶：${res.fire.toLocaleString()}
-錬成火晶：${res.refined.toLocaleString()}`;
+  detail.innerHTML = resourceMeta.map(r => {
+    const value = (r.key === "fire" || r.key === "refined")
+      ? res[r.key].toLocaleString()
+      : formatM(res[r.key]);
+
+    return `
+      <div class="resource-row">
+        <img class="resource-icon" src="${r.icon}" alt="${r.label}">
+        <span>${r.label}：${value}</span>
+      </div>
+    `;
+  }).join("");
 
   copyText.value =
 `【建造時間】
