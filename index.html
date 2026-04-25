@@ -15,16 +15,15 @@ body {
 }
 
 /* ヘッダー */
-.header {
-  margin-bottom: 10px;
-}
-.title {
-  font-size: 18px;
-  font-weight: bold;
-}
+.header { margin-bottom: 10px; }
+.title { font-size: 18px; font-weight: bold; }
 .meta {
   font-size: 12px;
   color: #777;
+}
+.meta a {
+  color: #007bff;
+  text-decoration: none;
 }
 
 /* テーブル */
@@ -43,7 +42,7 @@ th, td {
   font-size: 12px;
 }
 
-/* 入力UI統一 */
+/* 入力 */
 select, input {
   width: 100%;
   padding: 6px;
@@ -64,6 +63,22 @@ button {
   font-size: 15px;
 }
 
+/* セクション */
+.section {
+  background: white;
+  padding: 10px;
+  border-radius: 10px;
+  margin-bottom: 12px;
+}
+
+/* グループタイトル */
+.group-title {
+  font-size: 12px;
+  color: #555;
+  margin-bottom: 6px;
+}
+
+/* 微調整ボタン */
 .buff-buttons {
   display: flex;
   gap: 6px;
@@ -74,39 +89,42 @@ button {
 .buff-buttons button {
   flex: 1;
   min-width: 48px;
-
-  padding: 4px 6px;
+  padding: 5px;
   font-size: 12px;
-
-  background: #f1f3f5;
+  background: #ffffff;
   color: #333;
-
-  border: 1px solid #ddd;
+  border: 1px solid #bbb;
   border-radius: 6px;
-
-  cursor: pointer;
+  font-weight: 600;
 }
 
-/* 押したとき */
 .buff-buttons button:active {
-  background: #e0e3e7;
+  background: #e9ecef;
 }
 
-/* セクション */
-.section {
-  background: white;
-  padding: 10px;
-  border-radius: 10px;
-  margin-bottom: 12px;
+/* スイッチUI */
+.switch-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 6px;
 }
 
-/* 横並び */
-.inline {
+.switch {
+  background: #f8f9fa;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 8px;
+  font-size: 13px;
+
   display: flex;
-  gap: 10px;
+  justify-content: space-between;
+  align-items: center;
+
+  white-space: nowrap;
 }
 
-/* バフ説明 */
+/* 補足 */
 .info {
   font-size: 11px;
   color: #777;
@@ -114,10 +132,7 @@ button {
 }
 
 /* 結果 */
-.result {
-  display: grid;
-  gap: 10px;
-}
+.result { display: grid; gap: 10px; }
 
 .card {
   background: white;
@@ -139,10 +154,6 @@ button {
 }
 
 /* コピー */
-.copy-box {
-  margin-top: 10px;
-}
-
 textarea {
   width: 100%;
   height: 110px;
@@ -159,6 +170,10 @@ textarea {
   color: #888;
   margin-top: 10px;
 }
+.footer a {
+  color: #007bff;
+  text-decoration: none;
+}
 </style>
 </head>
 
@@ -166,7 +181,10 @@ textarea {
 
 <div class="header">
   <div class="title">ホワイトアウトサバイバル　建造計算ツール</div>
-  <div class="meta">Version 1.0.0</div>
+  <div class="meta">
+    Version 1.0.1 |
+    <a href="history.html">改訂履歴</a>
+  </div>
 </div>
 
 <table>
@@ -180,24 +198,23 @@ textarea {
 
 <button onclick="addRow()">＋追加</button>
 
+<!-- 建造速度 -->
 <div class="section">
+<div class="group-title">建造速度バフ</div>
 
-<label>基礎バフ (%)</label>
+<label>基礎建造バフ(%) ※研究,島,ジンマンスキル,VIP,ステーションを含む</label>
 <input id="baseBuff" type="number" value="80" step="0.1">
+
 <div class="buff-buttons">
-  <button type="button" onclick="adjustBuff(-10)">-10</button>
-  <button type="button" onclick="adjustBuff(-1)">-1</button>
-  <button type="button" onclick="adjustBuff(-0.1)">-0.1</button>
-  <button type="button" onclick="adjustBuff(0.1)">+0.1</button>
-  <button type="button" onclick="adjustBuff(1)">+1</button>
-  <button type="button" onclick="adjustBuff(10)">+10</button>
+  <button onclick="adjustBuff(-10)">-10</button>
+  <button onclick="adjustBuff(-1)">-1</button>
+  <button onclick="adjustBuff(-0.1)">-0.1</button>
+  <button onclick="adjustBuff(0.1)">+0.1</button>
+  <button onclick="adjustBuff(1)">+1</button>
+  <button onclick="adjustBuff(10)">+10</button>
 </div>
 
-<label>ジンマン</label>
-<select id="jinman"></select>
-<div id="jinmanInfo" class="info"></div>
-
-<label>ハイエナ</label>
+<label>ハイエナスキル</label>
 <select id="pet"></select>
 <div id="petInfo" class="info"></div>
 
@@ -208,14 +225,30 @@ textarea {
 <option value="15">+15%</option>
 </select>
 
-<div class="inline">
-<label><input type="checkbox" id="lord">領主司令 (+20%)</label>
-<label><input type="checkbox" id="gov">執政官スキル (+10%)</label>
+<div class="switch-grid">
+  <div class="switch">
+    領主司令
+    <input type="checkbox" id="lord">
+  </div>
+  <div class="switch">
+    執政官スキル
+    <input type="checkbox" id="gov">
+  </div>
 </div>
 
-<label>アグネス</label>
+<label>アグネススキル</label>
 <select id="agnes"></select>
 <div id="agnesInfo" class="info"></div>
+
+</div>
+
+<!-- 資源 -->
+<div class="section">
+<div class="group-title">資源消費バフ</div>
+
+<label>ジンマンスキル</label>
+<select id="jinman"></select>
+<div id="jinmanInfo" class="info"></div>
 
 </div>
 
@@ -229,9 +262,9 @@ textarea {
 
 <div class="card resources" id="detail"></div>
 
-<div class="card copy-box">
+<div class="card">
 <button onclick="copyResult()">📋 コピー（ゲームチャット用）</button>
-<textarea id="copyText" readonly placeholder="ここにコピー用テキストが表示されます"></textarea>
+<textarea id="copyText" readonly></textarea>
 </div>
 
 </div>
