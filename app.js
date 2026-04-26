@@ -2,6 +2,15 @@
 // データ
 // =============================
 let buildingData = [];
+const STORAGE_KEY = "wos-building-calc-state-v2";
+const LEGACY_STORAGE_KEY = "wos-building-calc-state-v1";
+const SHARE_KEY_PREFIX = "WBC1";
+let saveTimer = null;
+let isRestoringState = false;
+let appStore = {
+  activePresetId: null,
+  presets: []
+};
 
 // 建物名
 const buildingNames = {
@@ -51,7 +60,10 @@ async function loadData(){
   buildingData = await res.json();
 
   initBuffUI();
-  addRow();
+  initPresetUI();
+  setupPersistenceListeners();
+
+  restoreState();
 }
 loadData();
 
@@ -91,6 +103,19 @@ function updateBuffInfo(){
   agnesInfo.innerText = agnLv>0 ? `-${agnVal}時間 / 回` : "";
 }
 
+function initPresetUI(){
+  presetSelect.addEventListener("change",()=>{
+    switchPreset(presetSelect.value);
+  });
+
+  createPresetBtn.addEventListener("click",createPresetFromCurrent);
+  savePresetBtn.addEventListener("click",saveCurrentPreset);
+  deletePresetBtn.addEventListener("click",deleteCurrentPreset);
+  generateKeyBtn.addEventListener("click",generateShareKey);
+  copyKeyBtn.addEventListener("click",copyShareKey);
+  restoreKeyBtn.addEventListener("click",restoreFromShareKey);
+}
+
 // =============================
 // 基礎バフ調整
 // =============================
@@ -102,27 +127,43 @@ function adjustBuff(delta){
 
   // 小数1桁に整形
   input.value = Math.round(val * 10) / 10;
+  queueSave();
 }
 
 // =============================
 // 行追加
 // =============================
-function addRow(){
+function addRow(rowState=null){
   const tr=document.createElement("tr");
 
   tr.innerHTML=`
     <td><select class="b"></select></td>
     <td><select class="s"></select></td>
     <td><select class="e"></select></td>
-    <td><button onclick="this.closest('tr').remove()">×</button></td>
+    <td><button onclick="removeRow(this)">×</button></td>
   `;
 
   tbody.appendChild(tr);
-  initRow(tr);
+  initRow(tr,rowState);
+  queueSave();
+}
+
+function removeRow(button){
+  const tr = button.closest("tr");
+  if(tr){
+    tr.remove();
+  }
+
+  if(tbody.children.length === 0){
+    addRow();
+    return;
+  }
+
+  queueSave();
 }
 
 // =============================
-function initRow(tr){
+function initRow(tr,rowState){
   const b=tr.querySelector(".b");
   const s=tr.querySelector(".s");
   const e=tr.querySelector(".e");
@@ -142,13 +183,32 @@ function initRow(tr){
       s.innerHTML="";
       e.innerHTML="";
     }
+    queueSave();
   };
 
-  s.onchange=()=>filterEnd(s,e);
+  s.onchange=()=>{
+    filterEnd(s,e);
+    if(e.selectedOptions[0]?.style.display === "none"){
+      const visibleEnd=[...e.options].find(o=>o.style.display!=="none");
+      if(visibleEnd){
+        e.value=visibleEnd.value;
+      }
+    }
+    queueSave();
+  };
+
+  e.onchange=queueSave;
+
+  if(rowState?.buildingId){
+    b.value=rowState.buildingId;
+    if(b.value){
+      setLv(b.value,s,e,rowState.startLevel,rowState.endLevel);
+    }
+  }
 }
 
 // =============================
-function setLv(id,s,e){
+function setLv(id,s,e,startLevel,endLevel){
   const rows=buildingData
     .filter(r=>r.building_id===id)
     .sort((a,b)=>a.level_index-b.level_index);
@@ -161,7 +221,24 @@ function setLv(id,s,e){
     e.add(new Option(r.level_code,r.level_index));
   });
 
+  if(startLevel!==undefined){
+    s.value=String(startLevel);
+  }
+
   filterEnd(s,e);
+
+  const targetEnd=String(endLevel ?? "");
+  const hasEnd=[...e.options].some(o=>o.value===targetEnd && o.style.display!=="none");
+
+  if(hasEnd){
+    e.value=targetEnd;
+    return;
+  }
+
+  const firstVisible=[...e.options].find(o=>o.style.display!=="none");
+  if(firstVisible){
+    e.value=firstVisible.value;
+  }
 }
 
 // =============================
@@ -291,4 +368,273 @@ function formatTime(sec){
 
 function formatM(n){
   return (n/1000000).toFixed(2)+"M";
+}
+
+function setupPersistenceListeners(){
+  const ids=["baseBuff","jinman","pet","sub","lord","gov","agnes","presetName"];
+  ids.forEach(id=>{
+    const el=document.getElementById(id);
+    if(!el) return;
+
+    el.addEventListener("change",queueSave);
+    el.addEventListener("input",queueSave);
+  });
+}
+
+function queueSave(){
+  if(isRestoringState) return;
+  clearTimeout(saveTimer);
+  saveTimer=setTimeout(saveCurrentPreset,150);
+}
+
+function getCurrentState(){
+  const rows=[...document.querySelectorAll("#tbody tr")].map(tr=>({
+    buildingId: tr.querySelector(".b").value,
+    startLevel: tr.querySelector(".s").value,
+    endLevel: tr.querySelector(".e").value
+  }));
+
+  return {
+    rows,
+    buffs:{
+      baseBuff: baseBuff.value,
+      jinman: jinman.value,
+      pet: pet.value,
+      sub: sub.value,
+      lord: lord.checked,
+      gov: gov.checked,
+      agnes: agnes.value
+    }
+  };
+}
+
+function applyState(state){
+  const buffs=state?.buffs || {};
+  baseBuff.value = buffs.baseBuff ?? baseBuff.value;
+  jinman.value = buffs.jinman ?? jinman.value;
+  pet.value = buffs.pet ?? pet.value;
+  sub.value = buffs.sub ?? sub.value;
+  lord.checked = Boolean(buffs.lord);
+  gov.checked = Boolean(buffs.gov);
+  agnes.value = buffs.agnes ?? agnes.value;
+  updateBuffInfo();
+
+  tbody.innerHTML="";
+  const rows=Array.isArray(state?.rows) ? state.rows : [];
+  if(rows.length===0){
+    addRow();
+  }else{
+    rows.forEach(r=>addRow(r));
+  }
+}
+
+function saveStore(){
+  localStorage.setItem(STORAGE_KEY,JSON.stringify(appStore));
+}
+
+function createPreset(name,state){
+  const now = Date.now();
+  return {
+    id: `preset-${now}-${Math.random().toString(36).slice(2,7)}`,
+    name: name || `構成 ${appStore.presets.length+1}`,
+    updatedAt: now,
+    state
+  };
+}
+
+function renderPresetOptions(){
+  presetSelect.innerHTML="";
+
+  appStore.presets.forEach(p=>{
+    const option = new Option(p.name,p.id);
+    presetSelect.add(option);
+  });
+
+  if(appStore.activePresetId){
+    presetSelect.value = appStore.activePresetId;
+  }
+
+  const active = appStore.presets.find(p=>p.id===appStore.activePresetId);
+  presetName.value = active?.name || "";
+}
+
+function ensureDefaultPreset(){
+  if(appStore.presets.length>0) return;
+  const preset=createPreset("構成 1",getCurrentState());
+  appStore.presets=[preset];
+  appStore.activePresetId=preset.id;
+}
+
+function loadStore(){
+  const stateText=localStorage.getItem(STORAGE_KEY);
+  if(stateText){
+    try{
+      const parsed=JSON.parse(stateText);
+      if(Array.isArray(parsed?.presets)){
+        appStore = {
+          activePresetId: parsed.activePresetId || parsed.presets[0]?.id || null,
+          presets: parsed.presets
+        };
+        return;
+      }
+    }catch{}
+  }
+
+  const legacyText = localStorage.getItem(LEGACY_STORAGE_KEY);
+  if(legacyText){
+    try{
+      const legacyState=JSON.parse(legacyText);
+      const migrated=createPreset("構成 1",legacyState);
+      appStore={activePresetId:migrated.id,presets:[migrated]};
+      localStorage.removeItem(LEGACY_STORAGE_KEY);
+      saveStore();
+      return;
+    }catch{}
+  }
+
+  appStore = {
+    activePresetId: null,
+    presets: []
+  };
+}
+
+function saveCurrentPreset(){
+  if(isRestoringState) return;
+
+  const active=appStore.presets.find(p=>p.id===appStore.activePresetId);
+  if(!active) return;
+
+  active.name = (presetName.value || active.name || "構成").trim();
+  active.updatedAt = Date.now();
+  active.state = getCurrentState();
+
+  renderPresetOptions();
+  saveStore();
+}
+
+function restoreState(){
+  loadStore();
+
+  isRestoringState=true;
+  if(tbody.children.length===0){
+    addRow();
+  }
+  ensureDefaultPreset();
+  renderPresetOptions();
+
+  const active=appStore.presets.find(p=>p.id===appStore.activePresetId) || appStore.presets[0];
+  if(active){
+    appStore.activePresetId=active.id;
+    applyState(active.state);
+  }
+  renderPresetOptions();
+
+  isRestoringState=false;
+  saveStore();
+  calc();
+}
+
+function switchPreset(presetId){
+  const preset=appStore.presets.find(p=>p.id===presetId);
+  if(!preset) return;
+
+  isRestoringState=true;
+  appStore.activePresetId=presetId;
+  applyState(preset.state);
+  renderPresetOptions();
+  isRestoringState=false;
+  saveStore();
+  calc();
+}
+
+function createPresetFromCurrent(){
+  const nextName = `構成 ${appStore.presets.length+1}`;
+  const preset=createPreset(nextName,getCurrentState());
+  appStore.presets.push(preset);
+  appStore.activePresetId=preset.id;
+  renderPresetOptions();
+  saveStore();
+}
+
+function deleteCurrentPreset(){
+  if(appStore.presets.length<=1){
+    alert("最低1つの構成は必要です");
+    return;
+  }
+
+  const index=appStore.presets.findIndex(p=>p.id===appStore.activePresetId);
+  if(index<0) return;
+
+  appStore.presets.splice(index,1);
+  appStore.activePresetId=appStore.presets[Math.max(0,index-1)].id;
+  switchPreset(appStore.activePresetId);
+}
+
+function encodeSharePayload(payload){
+  const json = JSON.stringify(payload);
+  return btoa(unescape(encodeURIComponent(json)))
+    .replace(/\+/g,"-")
+    .replace(/\//g,"_")
+    .replace(/=+$/,"");
+}
+
+function decodeSharePayload(encoded){
+  const normalized=encoded.replace(/-/g,"+").replace(/_/g,"/");
+  const padded=normalized + "=".repeat((4 - normalized.length % 4) % 4);
+  const json=decodeURIComponent(escape(atob(padded)));
+  return JSON.parse(json);
+}
+
+function generateShareKey(){
+  saveCurrentPreset();
+  const active=appStore.presets.find(p=>p.id===appStore.activePresetId);
+  if(!active) return;
+
+  const payload={
+    version: 1,
+    name: active.name,
+    state: active.state
+  };
+
+  shareKey.value = `${SHARE_KEY_PREFIX}.${encodeSharePayload(payload)}`;
+}
+
+function copyShareKey(){
+  if(!shareKey.value){
+    generateShareKey();
+  }
+
+  if(!shareKey.value) return;
+  navigator.clipboard.writeText(shareKey.value);
+  alert("復元キーをコピーしました");
+}
+
+function restoreFromShareKey(){
+  const text = restoreKey.value.trim();
+  if(!text){
+    alert("復元キーを入力してください");
+    return;
+  }
+
+  if(!text.startsWith(`${SHARE_KEY_PREFIX}.`)){
+    alert("復元キーの形式が正しくありません");
+    return;
+  }
+
+  try{
+    const encoded=text.slice(SHARE_KEY_PREFIX.length+1);
+    const payload=decodeSharePayload(encoded);
+    if(!payload?.state){
+      throw new Error("invalid payload");
+    }
+
+    const imported=createPreset(`${payload.name || "共有構成"} (取込)`,payload.state);
+    appStore.presets.push(imported);
+    appStore.activePresetId=imported.id;
+    switchPreset(imported.id);
+    restoreKey.value="";
+    alert("復元キーから構成を追加しました");
+  }catch{
+    alert("復元キーの読み取りに失敗しました");
+  }
 }
