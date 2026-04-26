@@ -212,36 +212,6 @@ textarea {
 
 <button onclick="addRow()">＋追加</button>
 
-<div class="section">
-  <div class="group-title">構成の保存・共有</div>
-
-  <label>保存済み構成</label>
-  <select id="presetSelect"></select>
-
-  <label>構成名</label>
-  <input id="presetName" type="text" placeholder="例: 盾兵舎育成用">
-
-  <div class="buff-buttons">
-    <button id="createPresetBtn" type="button">新規作成</button>
-    <button id="savePresetBtn" type="button">上書き保存</button>
-    <button id="deletePresetBtn" type="button">削除</button>
-  </div>
-
-  <label>共有用ユニークキー</label>
-  <input id="shareKey" type="text" readonly placeholder="キー生成後に表示">
-
-  <div class="buff-buttons">
-    <button id="generateKeyBtn" type="button">キー生成</button>
-    <button id="copyKeyBtn" type="button">キーをコピー</button>
-  </div>
-
-  <label>復元キー入力</label>
-  <input id="restoreKey" type="text" placeholder="受け取ったキーを貼り付け">
-  <div class="buff-buttons">
-    <button id="restoreKeyBtn" type="button">キーから復元</button>
-  </div>
-</div>
-
 <!-- 建造速度 -->
 <div class="section">
 <div class="group-title">建造速度バフ</div>
@@ -311,6 +281,36 @@ textarea {
 <textarea id="copyText" readonly></textarea>
 </div>
 
+</div>
+
+<div class="section">
+  <div class="group-title">構成の保存・共有</div>
+
+  <label>保存済み構成</label>
+  <select id="presetSelect"></select>
+
+  <label>構成名</label>
+  <input id="presetName" type="text" placeholder="例: 盾兵舎育成用">
+
+  <div class="buff-buttons">
+    <button id="createPresetBtn" type="button">新規作成</button>
+    <button id="savePresetBtn" type="button">上書き保存</button>
+    <button id="deletePresetBtn" type="button">削除</button>
+  </div>
+
+  <label>共有用ユニークキー</label>
+  <input id="shareKey" type="text" readonly placeholder="キー生成後に表示">
+
+  <div class="buff-buttons">
+    <button id="generateKeyBtn" type="button">キー生成</button>
+    <button id="copyKeyBtn" type="button">キーをコピー</button>
+  </div>
+
+  <label>復元キー入力</label>
+  <input id="restoreKey" type="text" placeholder="受け取ったキーを貼り付け">
+  <div class="buff-buttons">
+    <button id="restoreKeyBtn" type="button">キーから復元</button>
+  </div>
 </div>
 
 <div class="footer">
