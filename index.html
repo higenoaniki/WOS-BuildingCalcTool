@@ -6,193 +6,208 @@
 <title>ホワイトアウトサバイバル　建造計算ツール</title>
 
 <style>
+:root {
+  --bg-night: #060d18;
+  --bg-ice: #14263f;
+  --panel: rgba(11, 21, 38, 0.86);
+  --panel-strong: rgba(8, 17, 32, 0.95);
+  --line: rgba(155, 192, 237, 0.32);
+  --line-strong: rgba(248, 230, 176, 0.4);
+  --text: #edf5ff;
+  --muted: #9db5d8;
+  --gold: #f8e6b0;
+  --gold-deep: #b78632;
+  --accent: #88cbff;
+}
+
+* { box-sizing: border-box; }
+
 body {
-  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-  padding: 12px;
-  max-width: 600px;
-  margin: auto;
-  background: #f5f7fa;
+  font-family: "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+  padding: 16px;
+  max-width: 900px;
+  margin: 0 auto;
+  color: var(--text);
+  min-height: 100vh;
+  background:
+    radial-gradient(1100px 540px at 85% -15%, rgba(137, 205, 255, 0.25), transparent 60%),
+    radial-gradient(680px 420px at 8% 0%, rgba(255, 225, 156, 0.17), transparent 64%),
+    linear-gradient(170deg, var(--bg-night) 0%, #0c1729 45%, var(--bg-ice) 100%);
 }
 
-/* ヘッダー */
-.header { margin-bottom: 10px; }
-.title { font-size: 18px; font-weight: bold; }
+.app-shell {
+  position: relative;
+}
+
+.app-shell::before {
+  content: "";
+  position: absolute;
+  inset: -8px;
+  border: 1px solid rgba(245, 227, 176, 0.22);
+  border-radius: 18px;
+  pointer-events: none;
+}
+
+.header {
+  margin-bottom: 16px;
+  padding: 14px;
+  border-radius: 14px;
+  border: 1px solid var(--line-strong);
+  background:
+    linear-gradient(165deg, rgba(42, 66, 96, 0.35), rgba(6, 15, 29, 0.92)),
+    repeating-linear-gradient(135deg, rgba(255,255,255,0.03) 0, rgba(255,255,255,0.03) 2px, transparent 2px, transparent 10px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.34), inset 0 0 0 1px rgba(255,255,255,0.05);
+}
+
+.badge {
+  display: inline-block;
+  margin-bottom: 6px;
+  padding: 3px 8px;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  border-radius: 999px;
+  color: #0f2138;
+  background: linear-gradient(180deg, #fceebe, #dbb56b);
+  font-weight: 800;
+}
+
+.title {
+  font-size: 23px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  color: var(--gold);
+  text-shadow: 0 1px 0 #5d4217, 0 0 14px rgba(255, 230, 176, 0.2);
+}
+
 .meta {
+  margin-top: 4px;
   font-size: 12px;
-  color: #777;
-}
-.meta a {
-  color: #007bff;
-  text-decoration: none;
+  color: var(--muted);
 }
 
-/* テーブル */
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-bottom: 10px;
-  background: white;
-  border-radius: 8px;
-  overflow: hidden;
+.meta a, .footer a { color: #a6d7ff; text-decoration: none; }
+
+.section, table, .card {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: linear-gradient(165deg, var(--panel), rgba(17, 31, 52, 0.75));
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.26), inset 0 0 0 1px rgba(255,255,255,0.03);
 }
+
+table { width: 100%; border-collapse: collapse; margin-bottom: 10px; overflow: hidden; }
 
 th, td {
-  border-bottom: 1px solid #eee;
-  padding: 6px;
-  font-size: 12px;
-}
-
-/* 入力 */
-select, input {
-  width: 100%;
-  padding: 6px;
-  font-size: 14px;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  box-sizing: border-box;
-}
-
-/* ボタン */
-button {
-  padding: 10px;
-  width: 100%;
-  background: #007bff;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 15px;
-}
-
-/* セクション */
-.section {
-  background: white;
-  padding: 10px;
-  border-radius: 10px;
-  margin-bottom: 12px;
-}
-
-/* グループタイトル */
-.group-title {
-  font-size: 12px;
-  color: #555;
-  margin-bottom: 6px;
-}
-
-/* 微調整ボタン */
-.buff-buttons {
-  display: flex;
-  gap: 6px;
-  margin-top: 6px;
-  flex-wrap: wrap;
-}
-
-.buff-buttons button {
-  flex: 1;
-  min-width: 48px;
-  padding: 5px;
-  font-size: 12px;
-  background: #ffffff;
-  color: #333;
-  border: 1px solid #bbb;
-  border-radius: 6px;
-  font-weight: 600;
-}
-
-.buff-buttons button:active {
-  background: #e9ecef;
-}
-
-/* スイッチUI */
-.switch-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-  margin-top: 6px;
-}
-
-.switch {
-  background: #f8f9fa;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 8px;
+  border-bottom: 1px solid rgba(157, 186, 220, 0.2);
+  padding: 8px 6px;
   font-size: 13px;
+}
 
+th {
+  color: var(--gold);
+  background: linear-gradient(180deg, rgba(255, 227, 157, 0.18), rgba(255, 227, 157, 0.03));
+  font-weight: 700;
+}
+
+select, input, textarea {
+  width: 100%;
+  padding: 8px;
+  margin-top: 4px;
+  margin-bottom: 6px;
+  font-size: 14px;
+  color: var(--text);
+  border: 1px solid rgba(148, 184, 225, 0.45);
+  border-radius: 8px;
+  background: linear-gradient(180deg, rgba(7, 15, 28, 0.96), rgba(11, 22, 40, 0.78));
+}
+
+input::placeholder { color: #7f98bc; }
+label { font-size: 12px; color: #cedef4; }
+
+button {
+  width: 100%;
+  padding: 10px;
+  border-radius: 9px;
+  border: 1px solid rgba(160, 207, 250, 0.88);
+  background: linear-gradient(180deg, #95d1ff 0%, #3b77b0 100%);
+  color: #f5fbff;
+  font-size: 14px;
+  font-weight: 700;
+  text-shadow: 0 1px 0 rgba(11, 24, 39, 0.92);
+  cursor: pointer;
+}
+
+button:hover { filter: brightness(1.08); }
+button:active { transform: translateY(1px); }
+
+.action-main {
+  border-color: rgba(255, 228, 163, 0.85);
+  background: linear-gradient(180deg, #f6dd9f 0%, #b9802e 100%);
+  color: #1e2636;
+  text-shadow: none;
+}
+
+td button {
+  padding: 6px 0;
+  background: linear-gradient(180deg, #ff9ea3 0%, #bf4e58 100%);
+  border-color: rgba(255, 186, 186, 0.95);
+}
+
+.section { padding: 12px; margin: 12px 0; }
+.group-title { font-size: 13px; color: var(--gold); font-weight: 700; margin-bottom: 8px; letter-spacing: 0.04em; }
+
+.buff-buttons { display: flex; gap: 6px; margin: 6px 0; flex-wrap: wrap; }
+.buff-buttons button { flex: 1; min-width: 60px; padding: 6px; font-size: 12px; }
+
+.switch-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 6px; }
+.switch {
+  background: linear-gradient(180deg, rgba(9, 17, 30, 0.95), rgba(14, 25, 42, 0.72));
+  border: 1px solid rgba(150, 187, 230, 0.35);
+  border-radius: 9px;
+  padding: 8px;
+  font-size: 12px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-
-  white-space: nowrap;
+  color: #dde9fb;
 }
 
-/* 補足 */
-.info {
-  font-size: 11px;
-  color: #777;
-  margin-bottom: 6px;
-}
-
-/* 結果 */
-.result { display: grid; gap: 10px; }
-
-.card {
-  background: white;
-  padding: 12px;
-  border-radius: 10px;
-}
+.info { font-size: 11px; color: var(--accent); margin-bottom: 6px; }
+.result { display: grid; gap: 10px; margin-top: 10px; }
+.card { padding: 12px; }
 
 .time {
-  font-size: 20px;
-  font-weight: bold;
+  font-size: 28px;
+  text-align: center;
+  font-weight: 800;
+  color: var(--gold);
+  text-shadow: 0 1px 0 #5f4319;
 }
 
-/* 資源 */
-.resources {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-  font-size: 13px;
-}
+.resources { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 13px; }
+.resource-row { display: flex; align-items: center; gap: 6px; }
+.resource-icon { width: 20px; height: 20px; object-fit: contain; border-radius: 4px; }
+textarea { height: 110px; }
 
-.resource-row {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.resource-icon {
-  width: 18px;
-  height: 18px;
-  object-fit: contain;
-  border-radius: 3px;
-}
-
-/* コピー */
-textarea {
-  width: 100%;
-  height: 110px;
-  font-size: 12px;
-  padding: 8px;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-}
-
-/* フッター */
 .footer {
   text-align: center;
   font-size: 11px;
-  color: #888;
-  margin-top: 10px;
+  color: #89a3c6;
+  margin: 14px 0 8px;
 }
-.footer a {
-  color: #007bff;
-  text-decoration: none;
+
+@media (max-width: 640px) {
+  body { padding: 10px; }
+  .switch-grid, .resources { grid-template-columns: 1fr; }
+  .title { font-size: 19px; }
 }
 </style>
 </head>
 
 <body>
+<div class="app-shell">
 
 <div class="header">
+  <div class="badge">UNOFFICIAL FAN TOOL</div>
   <div class="title">ホワイトアウトサバイバル　建造計算ツール</div>
   <div class="meta">
     Version 1.2.0 |
@@ -210,7 +225,7 @@ textarea {
 <tbody id="tbody"></tbody>
 </table>
 
-<button onclick="addRow()">＋追加</button>
+<button class="action-main" onclick="addRow()">＋追加</button>
 
 <!-- 建造速度 -->
 <div class="section">
@@ -266,7 +281,7 @@ textarea {
 
 </div>
 
-<button onclick="calc()">計算</button>
+<button class="action-main" onclick="calc()">計算</button>
 
 <div class="result">
 
@@ -319,5 +334,6 @@ textarea {
 
 <script src="app.js"></script>
 
+</div>
 </body>
 </html>
