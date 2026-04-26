@@ -445,8 +445,9 @@ function createPreset(name,state){
 function renderPresetOptions(){
   presetSelect.innerHTML="";
 
-  appStore.presets.forEach(p=>{
-    const option = new Option(p.name,p.id);
+  appStore.presets.forEach((p,index)=>{
+    const displayName = (p.name || "").trim() || `構成 ${index+1}`;
+    const option = new Option(displayName,p.id);
     presetSelect.add(option);
   });
 
@@ -504,7 +505,7 @@ function saveCurrentPreset(){
   const active=appStore.presets.find(p=>p.id===appStore.activePresetId);
   if(!active) return;
 
-  active.name = (presetName.value || active.name || "構成").trim();
+  active.name = presetName.value.trim();
   active.updatedAt = Date.now();
   active.state = getCurrentState();
 
