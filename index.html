@@ -126,6 +126,29 @@ body {
   object-fit: contain;
 }
 
+.release-note {
+  margin-top: 10px;
+  padding: 9px 10px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 225, 164, 0.35);
+  background: linear-gradient(145deg, rgba(10, 22, 40, 0.82), rgba(22, 39, 63, 0.65));
+  font-size: 11px;
+  color: #d6e8ff;
+  line-height: 1.5;
+}
+.release-note strong {
+  color: var(--gold);
+}
+.body-watermark {
+  position: fixed;
+  left: 14px;
+  bottom: 14px;
+  width: 92px;
+  opacity: 0.14;
+  pointer-events: none;
+  filter: drop-shadow(0 0 8px rgba(162, 210, 255, 0.5));
+}
+
 .section, table, .card {
   border: 1px solid var(--line);
   border-radius: 12px;
@@ -278,7 +301,7 @@ textarea { height: 110px; }
   <div class="badge">UNOFFICIAL FAN TOOL</div>
   <div class="title">ホワイトアウトサバイバル　建造計算ツール</div>
   <div class="meta">
-    Version 1.2.2 |
+    Version 1.2.3 |
     <a href="history.html">改訂履歴</a>
   </div>
   <div class="meta">入力内容は自動保存されます。構成保存・共有キーは建物/レベルに加えてバフ設定も含みます。</div>
@@ -287,7 +310,9 @@ textarea { height: 110px; }
     <span class="official-chip"><img src="https://gom-s3-user-avatar.s3.us-west-2.amazonaws.com/wp-content/uploads/2023/05/item_icon_105.png" alt="鉄">鉄</span>
     <span class="official-chip"><img src="https://gom-s3-user-avatar.s3.us-west-2.amazonaws.com/wp-content/uploads/2023/07/item_icon_100081.png" alt="火晶">火晶</span>
   </div>
+  <div class="release-note"><strong>v1.2.3:</strong> 配色リデザイン / 公式キービジュアル背景 / 公式ファビコンの透過ウォーターマークを適用済み</div>
 </div>
+<img class="body-watermark" src="https://www.whiteoutsurvival.com/wp-content/uploads/2024/01/cropped-favicon-32x32.png" alt="Whiteout Survival icon watermark">
 
 <table>
 <thead>
