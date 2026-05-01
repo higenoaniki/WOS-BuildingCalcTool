@@ -27,6 +27,8 @@ body {
   color: var(--text);
   min-height: 100vh;
   background:
+    linear-gradient(122deg, rgba(3, 10, 21, 0.8), rgba(4, 10, 20, 0.9)),
+    url("https://www.whiteoutsurvival.com/wp-content/uploads/2024/01/kv-pc.jpg") center top/cover fixed no-repeat,
     radial-gradient(1100px 540px at 85% -15%, rgba(137, 205, 255, 0.25), transparent 60%),
     radial-gradient(680px 420px at 8% 0%, rgba(255, 225, 156, 0.17), transparent 64%),
     linear-gradient(170deg, var(--bg-night) 0%, #0c1729 45%, var(--bg-ice) 100%);
@@ -42,6 +44,18 @@ body {
   inset: -8px;
   border: 1px solid rgba(245, 227, 176, 0.22);
   border-radius: 18px;
+  pointer-events: none;
+}
+
+.app-shell::after {
+  content: "";
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  width: 110px;
+  height: 110px;
+  background: url("https://www.whiteoutsurvival.com/wp-content/uploads/2024/01/cropped-favicon-32x32.png") center/contain no-repeat;
+  opacity: 0.2;
   pointer-events: none;
 }
 
