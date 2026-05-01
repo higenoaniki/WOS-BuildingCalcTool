@@ -60,6 +60,24 @@ body {
     repeating-linear-gradient(135deg, rgba(255,255,255,0.03) 0, rgba(255,255,255,0.03) 2px, transparent 2px, transparent 10px);
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.34), inset 0 0 0 1px rgba(255,255,255,0.05);
 }
+.hero-visual{
+  margin-top: 12px;
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  align-items: center;
+  padding: 10px;
+  border-radius: 12px;
+  border: 1px solid rgba(172, 211, 252, 0.38);
+  background: linear-gradient(135deg, rgba(17,34,58,0.88), rgba(11,22,40,0.64));
+  backdrop-filter: blur(2px);
+}
+.hero-logo{
+  width: 96px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.25);
+  box-shadow: 0 10px 20px rgba(0,0,0,.25);
+}
 
 .header::after {
   content: "";
@@ -291,6 +309,7 @@ textarea { height: 110px; }
   body { padding: 10px; }
   .switch-grid, .resources { grid-template-columns: 1fr; }
   .title { font-size: 19px; }
+  .hero-visual{ justify-content: flex-start; }
 }
 </style>
 </head>
@@ -311,9 +330,14 @@ textarea { height: 110px; }
     <span class="official-chip"><img src="https://gom-s3-user-avatar.s3.us-west-2.amazonaws.com/wp-content/uploads/2023/05/item_icon_105.png" alt="鉄">鉄</span>
     <span class="official-chip"><img src="https://gom-s3-user-avatar.s3.us-west-2.amazonaws.com/wp-content/uploads/2023/07/item_icon_100081.png" alt="火晶">火晶</span>
   </div>
-  <div class="release-note"><strong>v1.2.3:</strong> 配色リデザイン / 公式キービジュアル背景 / 公式ファビコンの透過ウォーターマークを適用済み</div>
+  <div class="hero-visual">
+    <img class="hero-logo" src="https://gom-s3-user-avatar.s3.us-west-2.amazonaws.com/wp-content/uploads/2023/05/item_icon_103.png" alt="公式素材 木アイコン">
+    <img class="hero-logo" src="https://gom-s3-user-avatar.s3.us-west-2.amazonaws.com/wp-content/uploads/2023/05/item_icon_105.png" alt="公式素材 鉄アイコン">
+    <img class="hero-logo" src="https://gom-s3-user-avatar.s3.us-west-2.amazonaws.com/wp-content/uploads/2023/07/item_icon_100081.png" alt="公式素材 火晶アイコン">
+  </div>
+  <div class="release-note">画像の表示安定性を改善し、未表示だったウォーターマーク画像を修正しました。</div>
 </div>
-<img class="body-watermark" src="https://www.whiteoutsurvival.com/wp-content/uploads/2024/01/cropped-favicon-32x32.png" alt="Whiteout Survival icon watermark">
+<img class="body-watermark" src="https://gom-s3-user-avatar.s3.us-west-2.amazonaws.com/wp-content/uploads/2023/07/item_icon_100081.png" alt="Whiteout Survival watermark">
 
 <table>
 <thead>
