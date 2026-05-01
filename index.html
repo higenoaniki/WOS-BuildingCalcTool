@@ -60,6 +60,32 @@ body {
     repeating-linear-gradient(135deg, rgba(255,255,255,0.03) 0, rgba(255,255,255,0.03) 2px, transparent 2px, transparent 10px);
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.34), inset 0 0 0 1px rgba(255,255,255,0.05);
 }
+.hero-visual{
+  margin-top: 12px;
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 12px;
+  align-items: center;
+  padding: 10px;
+  border-radius: 12px;
+  border: 1px solid rgba(172, 211, 252, 0.38);
+  background: linear-gradient(135deg, rgba(17,34,58,0.88), rgba(11,22,40,0.64));
+  backdrop-filter: blur(2px);
+}
+.hero-logo{
+  width: 100%;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.25);
+  box-shadow: 0 10px 20px rgba(0,0,0,.25);
+}
+.hero-copy{
+  font-size: 12px;
+  line-height: 1.6;
+  color: #dcebff;
+}
+.hero-copy strong{
+  color: var(--gold);
+}
 
 .header::after {
   content: "";
@@ -291,6 +317,8 @@ textarea { height: 110px; }
   body { padding: 10px; }
   .switch-grid, .resources { grid-template-columns: 1fr; }
   .title { font-size: 19px; }
+  .hero-visual{ grid-template-columns: 1fr; }
+  .hero-logo{ max-width: 120px; }
 }
 </style>
 </head>
@@ -302,7 +330,7 @@ textarea { height: 110px; }
   <div class="badge">UNOFFICIAL FAN TOOL</div>
   <div class="title">ホワイトアウトサバイバル　建造計算ツール</div>
   <div class="meta">
-    Version 1.2.3 |
+    Version 1.2.4 |
     <a href="history.html">改訂履歴</a>
   </div>
   <div class="meta">入力内容は自動保存されます。構成保存・共有キーは建物/レベルに加えてバフ設定も含みます。</div>
@@ -311,7 +339,14 @@ textarea { height: 110px; }
     <span class="official-chip"><img src="https://gom-s3-user-avatar.s3.us-west-2.amazonaws.com/wp-content/uploads/2023/05/item_icon_105.png" alt="鉄">鉄</span>
     <span class="official-chip"><img src="https://gom-s3-user-avatar.s3.us-west-2.amazonaws.com/wp-content/uploads/2023/07/item_icon_100081.png" alt="火晶">火晶</span>
   </div>
-  <div class="release-note"><strong>v1.2.3:</strong> 配色リデザイン / 公式キービジュアル背景 / 公式ファビコンの透過ウォーターマークを適用済み</div>
+  <div class="hero-visual">
+    <img class="hero-logo" src="https://www.whiteoutsurvival.com/wp-content/uploads/2024/01/cropped-icon-192x192.png" alt="Whiteout Survival 公式アイコン">
+    <div class="hero-copy">
+      <strong>公式素材ベースの先進デザイン</strong><br>
+      公式キービジュアルに加えて、公式アイコンをUIキービジュアルとして採用。ガラス調パネルと発光アクセントで、見やすさと近未来感を両立しています。
+    </div>
+  </div>
+  <div class="release-note"><strong>v1.2.4:</strong> 公式アイコンを使ったヒーロービジュアル追加 / ガラス調カードで先進的な見た目にアップデート</div>
 </div>
 <img class="body-watermark" src="https://www.whiteoutsurvival.com/wp-content/uploads/2024/01/cropped-favicon-32x32.png" alt="Whiteout Survival icon watermark">
 
