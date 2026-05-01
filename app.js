@@ -47,7 +47,7 @@ const resourceMeta = [
   },
   {
     key: "refined",
-    label: "錬成火晶",
+    label: "精錬火晶",
     icon: "https://gom-s3-user-avatar.s3.us-west-2.amazonaws.com/wp-content/uploads/2025/05/21122055/item_icon_100082.png"
   }
 ];
@@ -347,7 +347,7 @@ ${timeText}
 石炭 ${formatM(res.coal)}
 鉄 ${formatM(res.iron)}
 火晶 ${res.fire.toLocaleString()}
-錬成火晶 ${res.refined.toLocaleString()}`;
+精錬火晶 ${res.refined.toLocaleString()}`;
 }
 
 // =============================
