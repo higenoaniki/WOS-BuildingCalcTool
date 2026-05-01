@@ -7,17 +7,15 @@
 
 <style>
 :root {
-  --bg-night: #040913;
-  --bg-ice: #122947;
-  --panel: rgba(8, 18, 34, 0.8);
-  --panel-strong: rgba(6, 14, 28, 0.95);
-  --line: rgba(128, 182, 235, 0.32);
-  --line-strong: rgba(244, 220, 154, 0.48);
-  --text: #f3f8ff;
-  --muted: #b6cae6;
-  --gold: #ffe4a0;
-  --gold-deep: #bd7f2f;
-  --accent: #98d5ff;
+  --bg-night: #050a14;
+  --bg-ice: #0e223a;
+  --panel: rgba(10, 22, 40, 0.78);
+  --line: rgba(140, 194, 245, 0.28);
+  --line-strong: rgba(255, 225, 164, 0.52);
+  --text: #f4f8ff;
+  --muted: #bdd0ea;
+  --gold: #ffe6ae;
+  --accent: #9ad8ff;
 }
 
 * { box-sizing: border-box; }
@@ -30,8 +28,9 @@ body {
   color: var(--text);
   min-height: 100vh;
   background:
-    radial-gradient(1100px 540px at 85% -15%, rgba(137, 205, 255, 0.25), transparent 60%),
-    radial-gradient(680px 420px at 8% 0%, rgba(255, 225, 156, 0.17), transparent 64%),
+    linear-gradient(118deg, rgba(4, 12, 24, 0.84), rgba(4, 12, 24, 0.94)),
+    url("https://www.whiteoutsurvival.com/wp-content/uploads/2024/01/kv-pc.jpg") top center/cover fixed no-repeat,
+    radial-gradient(1000px 520px at 90% -10%, rgba(126, 201, 255, 0.2), transparent 62%),
     linear-gradient(170deg, var(--bg-night) 0%, #0c1729 45%, var(--bg-ice) 100%);
 }
 
@@ -66,8 +65,8 @@ body {
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(118deg, rgba(6, 16, 31, 0.94) 18%, rgba(6, 16, 31, 0.62) 64%, rgba(6, 16, 31, 0.92) 100%),
-    url("https://www.whiteoutsurvival.com/wp-content/uploads/2024/01/kv-pc.jpg") center/cover no-repeat;
+    linear-gradient(118deg, rgba(7, 17, 32, 0.94) 22%, rgba(7, 17, 32, 0.68) 70%, rgba(7, 17, 32, 0.95) 100%),
+    url("https://www.whiteoutsurvival.com/wp-content/uploads/2024/01/kv-pc.jpg") center 30%/cover no-repeat;
   z-index: 0;
   opacity: 0.92;
 }
@@ -117,7 +116,7 @@ body {
   padding: 3px 7px;
   border-radius: 999px;
   border: 1px solid rgba(172, 211, 252, 0.42);
-  background: rgba(8, 22, 40, 0.55);
+  background: rgba(8, 22, 40, 0.7);
   font-size: 10px;
   color: #d6e8ff;
 }
@@ -186,7 +185,7 @@ button {
   cursor: pointer;
 }
 
-button:hover { filter: brightness(1.08); }
+button:hover { filter: brightness(1.08); box-shadow: 0 4px 14px rgba(142, 202, 255, 0.32); }
 button:active { transform: translateY(1px); }
 
 .action-main {
@@ -249,6 +248,19 @@ textarea { height: 110px; }
   font-size: 11px;
   color: #89a3c6;
   margin: 14px 0 8px;
+}
+
+.app-shell::after {
+  content: "";
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  width: 120px;
+  height: 120px;
+  background: url("https://www.whiteoutsurvival.com/wp-content/uploads/2024/01/cropped-favicon-32x32.png") center/contain no-repeat;
+  opacity: 0.16;
+  pointer-events: none;
+  filter: drop-shadow(0 0 8px rgba(162, 210, 255, 0.5));
 }
 
 @media (max-width: 640px) {
