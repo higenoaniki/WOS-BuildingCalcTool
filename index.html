@@ -7,17 +7,17 @@
 
 <style>
 :root {
-  --bg-night: #060d18;
-  --bg-ice: #14263f;
-  --panel: rgba(11, 21, 38, 0.86);
-  --panel-strong: rgba(8, 17, 32, 0.95);
-  --line: rgba(155, 192, 237, 0.32);
-  --line-strong: rgba(248, 230, 176, 0.4);
-  --text: #edf5ff;
-  --muted: #9db5d8;
-  --gold: #f8e6b0;
-  --gold-deep: #b78632;
-  --accent: #88cbff;
+  --bg-night: #040913;
+  --bg-ice: #122947;
+  --panel: rgba(8, 18, 34, 0.8);
+  --panel-strong: rgba(6, 14, 28, 0.95);
+  --line: rgba(128, 182, 235, 0.32);
+  --line-strong: rgba(244, 220, 154, 0.48);
+  --text: #f3f8ff;
+  --muted: #b6cae6;
+  --gold: #ffe4a0;
+  --gold-deep: #bd7f2f;
+  --accent: #98d5ff;
 }
 
 * { box-sizing: border-box; }
@@ -49,14 +49,32 @@ body {
 }
 
 .header {
+  position: relative;
+  overflow: hidden;
   margin-bottom: 16px;
-  padding: 14px;
+  padding: 14px 14px 16px;
   border-radius: 14px;
   border: 1px solid var(--line-strong);
   background:
     linear-gradient(165deg, rgba(42, 66, 96, 0.35), rgba(6, 15, 29, 0.92)),
     repeating-linear-gradient(135deg, rgba(255,255,255,0.03) 0, rgba(255,255,255,0.03) 2px, transparent 2px, transparent 10px);
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.34), inset 0 0 0 1px rgba(255,255,255,0.05);
+}
+
+.header::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(118deg, rgba(6, 16, 31, 0.94) 18%, rgba(6, 16, 31, 0.62) 64%, rgba(6, 16, 31, 0.92) 100%),
+    url("https://www.whiteoutsurvival.com/wp-content/uploads/2024/01/kv-pc.jpg") center/cover no-repeat;
+  z-index: 0;
+  opacity: 0.92;
+}
+
+.header > * {
+  position: relative;
+  z-index: 1;
 }
 
 .badge {
@@ -86,6 +104,28 @@ body {
 }
 
 .meta a, .footer a { color: #a6d7ff; text-decoration: none; }
+.official-strip{
+  margin-top: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.official-chip{
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 7px;
+  border-radius: 999px;
+  border: 1px solid rgba(172, 211, 252, 0.42);
+  background: rgba(8, 22, 40, 0.55);
+  font-size: 10px;
+  color: #d6e8ff;
+}
+.official-chip img{
+  width: 13px;
+  height: 13px;
+  object-fit: contain;
+}
 
 .section, table, .card {
   border: 1px solid var(--line);
@@ -180,6 +220,12 @@ td button {
   align-items: center;
   color: #dde9fb;
 }
+.switch-label {
+  white-space: nowrap;
+  word-break: keep-all;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
 
 .info { font-size: 11px; color: var(--accent); margin-bottom: 6px; }
 .result { display: grid; gap: 10px; margin-top: 10px; }
@@ -220,10 +266,15 @@ textarea { height: 110px; }
   <div class="badge">UNOFFICIAL FAN TOOL</div>
   <div class="title">ホワイトアウトサバイバル　建造計算ツール</div>
   <div class="meta">
-    Version 1.2.0 |
+    Version 1.2.2 |
     <a href="history.html">改訂履歴</a>
   </div>
   <div class="meta">入力内容は自動保存されます。構成保存・共有キーは建物/レベルに加えてバフ設定も含みます。</div>
+  <div class="official-strip">
+    <span class="official-chip"><img src="https://gom-s3-user-avatar.s3.us-west-2.amazonaws.com/wp-content/uploads/2023/05/item_icon_103.png" alt="木">木</span>
+    <span class="official-chip"><img src="https://gom-s3-user-avatar.s3.us-west-2.amazonaws.com/wp-content/uploads/2023/05/item_icon_105.png" alt="鉄">鉄</span>
+    <span class="official-chip"><img src="https://gom-s3-user-avatar.s3.us-west-2.amazonaws.com/wp-content/uploads/2023/07/item_icon_100081.png" alt="火晶">火晶</span>
+  </div>
 </div>
 
 <table>
@@ -266,11 +317,11 @@ textarea { height: 110px; }
 
 <div class="switch-grid">
   <div class="switch">
-    領主司令
+    <span class="switch-label">領主司令</span>
     <input type="checkbox" id="lord">
   </div>
   <div class="switch">
-    執政官スキル
+    <span class="switch-label">執政官スキル</span>
     <input type="checkbox" id="gov">
   </div>
 </div>
