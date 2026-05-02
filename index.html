@@ -62,9 +62,8 @@ body {
 }
 .hero-visual{
   margin-top: 12px;
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: 120px 1fr;
   gap: 12px;
   align-items: center;
   padding: 10px;
@@ -74,11 +73,18 @@ body {
   backdrop-filter: blur(2px);
 }
 .hero-logo{
-  width: 96px; /* codex側の固定アイコン案を採用（テキスト無し3枚構成） */
-  max-width: 100%;
+  width: 100%;
   border-radius: 10px;
   border: 1px solid rgba(255,255,255,0.25);
   box-shadow: 0 10px 20px rgba(0,0,0,.25);
+}
+.hero-copy{
+  font-size: 12px;
+  line-height: 1.6;
+  color: #dcebff;
+}
+.hero-copy strong{
+  color: var(--gold);
 }
 
 .header::after {
@@ -311,7 +317,8 @@ textarea { height: 110px; }
   body { padding: 10px; }
   .switch-grid, .resources { grid-template-columns: 1fr; }
   .title { font-size: 19px; }
-  .hero-visual{ justify-content: center; }
+  .hero-visual{ grid-template-columns: 1fr; }
+  .hero-logo{ max-width: 120px; }
 }
 </style>
 </head>
@@ -323,7 +330,7 @@ textarea { height: 110px; }
   <div class="badge">UNOFFICIAL FAN TOOL</div>
   <div class="title">ホワイトアウトサバイバル　建造計算ツール</div>
   <div class="meta">
-    Version 1.2.3 |
+    Version 1.2.4 |
     <a href="history.html">改訂履歴</a>
   </div>
   <div class="meta">入力内容は自動保存されます。構成保存・共有キーは建物/レベルに加えてバフ設定も含みます。</div>
@@ -333,11 +340,13 @@ textarea { height: 110px; }
     <span class="official-chip"><img src="https://gom-s3-user-avatar.s3.us-west-2.amazonaws.com/wp-content/uploads/2023/07/item_icon_100081.png" alt="火晶">火晶</span>
   </div>
   <div class="hero-visual">
-    <img class="hero-logo" src="https://gom-s3-user-avatar.s3.us-west-2.amazonaws.com/wp-content/uploads/2023/05/item_icon_103.png" alt="公式素材 木アイコン">
-    <img class="hero-logo" src="https://gom-s3-user-avatar.s3.us-west-2.amazonaws.com/wp-content/uploads/2023/05/item_icon_105.png" alt="公式素材 鉄アイコン">
-    <img class="hero-logo" src="https://gom-s3-user-avatar.s3.us-west-2.amazonaws.com/wp-content/uploads/2023/07/item_icon_100081.png" alt="公式素材 火晶アイコン">
+    <img class="hero-logo" src="https://gom-s3-user-avatar.s3.us-west-2.amazonaws.com/wp-content/uploads/2023/07/item_icon_100081.png" alt="Whiteout Survival 公式アイコン">
+    <div class="hero-copy">
+      <strong>公式素材ベースの先進デザイン</strong><br>
+      公式キービジュアルに加えて、公式アイコンをUIキービジュアルとして採用。ガラス調パネルと発光アクセントで、見やすさと近未来感を両立しています。
+    </div>
   </div>
-  <div class="release-note">画像の表示安定性を改善し、未表示だったウォーターマーク画像を修正しました。</div>
+  <div class="release-note"><strong>v1.2.4:</strong> 公式アイコンを使ったヒーロービジュアル追加 / ガラス調カードで先進的な見た目にアップデート</div>
 </div>
 <img class="body-watermark" src="https://gom-s3-user-avatar.s3.us-west-2.amazonaws.com/wp-content/uploads/2023/07/item_icon_100081.png" alt="Whiteout Survival watermark">
 
