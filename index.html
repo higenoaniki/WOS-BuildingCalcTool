@@ -7,58 +7,81 @@
 
 <style>
 :root {
-  --bg-night: #08111f;
-  --bg-ice: #1a3354;
-  --panel: rgba(8, 20, 36, 0.82);
-  --line: rgba(140, 194, 245, 0.28);
-  --line-strong: rgba(255, 225, 164, 0.52);
+  --bg-night: #020617;
+  --bg-ice: #0f2746;
+  --panel: rgba(7, 18, 34, 0.72);
+  --panel-strong: rgba(8, 24, 45, 0.88);
+  --line: rgba(135, 211, 255, 0.22);
+  --line-strong: rgba(56, 189, 248, 0.56);
   --text: #f4f8ff;
-  --muted: #bdd0ea;
-  --gold: #ffe6ae;
-  --accent: #9ad8ff;
+  --muted: #a8c4e6;
+  --gold: #f8e6b0;
+  --accent: #22d3ee;
+  --accent-2: #60a5fa;
+  --danger: #fb7185;
 }
 
 * { box-sizing: border-box; }
 
 body {
   font-family: "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
-  padding: 16px;
+  padding: 24px 16px;
   max-width: 900px;
   margin: 0 auto;
   color: var(--text);
   min-height: 100vh;
   background:
-    linear-gradient(122deg, rgba(3, 10, 21, 0.78), rgba(4, 10, 20, 0.9)),
+    radial-gradient(680px 360px at 15% -8%, rgba(34, 211, 238, 0.28), transparent 64%),
+    radial-gradient(900px 520px at 92% 4%, rgba(59, 130, 246, 0.26), transparent 60%),
+    radial-gradient(680px 460px at 50% 105%, rgba(248, 230, 176, 0.13), transparent 60%),
+    linear-gradient(145deg, rgba(2, 6, 23, 0.78), rgba(5, 14, 31, 0.94)),
     url("https://www.whiteoutsurvival.com/wp-content/uploads/2024/01/kv-pc.jpg") center top/cover fixed no-repeat,
-    radial-gradient(900px 460px at 93% -8%, rgba(122, 199, 255, 0.3), transparent 62%),
-    radial-gradient(720px 420px at 5% 0%, rgba(255, 212, 122, 0.2), transparent 60%),
-    linear-gradient(170deg, var(--bg-night) 0%, #0d1c31 42%, var(--bg-ice) 100%);
+    linear-gradient(170deg, var(--bg-night) 0%, #071629 48%, var(--bg-ice) 100%);
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.028) 1px, transparent 1px);
+  background-size: 44px 44px;
+  mask-image: linear-gradient(to bottom, rgba(0,0,0,0.55), transparent 72%);
 }
 
 .app-shell {
   position: relative;
+  padding: 2px;
 }
 
 .app-shell::before {
   content: "";
   position: absolute;
-  inset: -8px;
-  border: 1px solid rgba(245, 227, 176, 0.22);
-  border-radius: 18px;
+  inset: -10px;
+  border: 1px solid rgba(125, 211, 252, 0.22);
+  border-radius: 26px;
+  background: linear-gradient(135deg, rgba(34, 211, 238, 0.12), transparent 30%, rgba(248, 230, 176, 0.09));
   pointer-events: none;
+  z-index: -1;
 }
 
 .header {
   position: relative;
   overflow: hidden;
-  margin-bottom: 16px;
-  padding: 14px 14px 16px;
-  border-radius: 14px;
+  margin-bottom: 18px;
+  padding: 18px 18px 20px;
+  border-radius: 22px;
   border: 1px solid var(--line-strong);
   background:
-    linear-gradient(165deg, rgba(42, 66, 96, 0.35), rgba(6, 15, 29, 0.92)),
-    repeating-linear-gradient(135deg, rgba(255,255,255,0.03) 0, rgba(255,255,255,0.03) 2px, transparent 2px, transparent 10px);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.34), inset 0 0 0 1px rgba(255,255,255,0.05);
+    linear-gradient(145deg, rgba(14, 39, 67, 0.62), rgba(4, 13, 28, 0.92)),
+    repeating-linear-gradient(135deg, rgba(255,255,255,0.04) 0, rgba(255,255,255,0.04) 1px, transparent 1px, transparent 12px);
+  box-shadow:
+    0 22px 60px rgba(0, 0, 0, 0.42),
+    0 0 36px rgba(34, 211, 238, 0.13),
+    inset 0 1px 0 rgba(255,255,255,0.08);
+  backdrop-filter: blur(16px);
 }
 .hero-visual{
   margin-top: 12px;
@@ -92,7 +115,7 @@ body {
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(118deg, rgba(7, 17, 32, 0.94) 22%, rgba(7, 17, 32, 0.68) 70%, rgba(7, 17, 32, 0.95) 100%),
+    linear-gradient(118deg, rgba(3, 9, 22, 0.96) 18%, rgba(5, 18, 36, 0.70) 70%, rgba(3, 9, 22, 0.97) 100%),
     url("https://www.whiteoutsurvival.com/wp-content/uploads/2024/01/kv-pc.jpg") center 30%/cover no-repeat;
   z-index: 0;
   opacity: 0.96;
@@ -105,22 +128,23 @@ body {
 
 .badge {
   display: inline-block;
-  margin-bottom: 6px;
-  padding: 3px 8px;
+  margin-bottom: 8px;
+  padding: 5px 10px;
   font-size: 10px;
   letter-spacing: 0.08em;
   border-radius: 999px;
-  color: #0f2138;
-  background: linear-gradient(180deg, #fceebe, #dbb56b);
+  color: #061827;
+  background: linear-gradient(135deg, #67e8f9, #f8e6b0);
   font-weight: 800;
+  box-shadow: 0 0 18px rgba(34, 211, 238, 0.28);
 }
 
 .title {
-  font-size: 23px;
+  font-size: clamp(22px, 4.5vw, 34px);
   font-weight: 800;
-  letter-spacing: 0.04em;
-  color: var(--gold);
-  text-shadow: 0 1px 0 #5d4217, 0 0 14px rgba(255, 230, 176, 0.2);
+  letter-spacing: 0.03em;
+  color: #f8fbff;
+  text-shadow: 0 0 24px rgba(34, 211, 238, 0.35);
 }
 
 .meta {
@@ -129,7 +153,7 @@ body {
   color: var(--muted);
 }
 
-.meta a, .footer a { color: #a6d7ff; text-decoration: none; }
+.meta a, .footer a { color: #67e8f9; text-decoration: none; }
 .official-strip{
   margin-top: 8px;
   display: flex;
@@ -171,42 +195,57 @@ body {
   left: 14px;
   bottom: 14px;
   width: 110px;
-  opacity: 0.2;
+  opacity: 0.16;
   pointer-events: none;
   filter: drop-shadow(0 0 8px rgba(162, 210, 255, 0.5));
 }
 
 .section, table, .card {
   border: 1px solid var(--line);
-  border-radius: 12px;
-  background: linear-gradient(165deg, var(--panel), rgba(17, 31, 52, 0.75));
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.26), inset 0 0 0 1px rgba(255,255,255,0.03);
+  border-radius: 18px;
+  background:
+    linear-gradient(160deg, rgba(255,255,255,0.055), rgba(255,255,255,0.018)),
+    linear-gradient(165deg, var(--panel), rgba(10, 28, 51, 0.78));
+  box-shadow:
+    0 18px 44px rgba(0, 0, 0, 0.34),
+    inset 0 1px 0 rgba(255,255,255,0.08),
+    inset 0 0 26px rgba(34, 211, 238, 0.035);
+  backdrop-filter: blur(14px);
 }
 
-table { width: 100%; border-collapse: collapse; margin-bottom: 10px; overflow: hidden; }
+table { width: 100%; border-collapse: collapse; margin-bottom: 12px; overflow: hidden; }
 
 th, td {
-  border-bottom: 1px solid rgba(157, 186, 220, 0.2);
-  padding: 8px 6px;
+  border-bottom: 1px solid rgba(157, 186, 220, 0.16);
+  padding: 10px 7px;
   font-size: 13px;
 }
 
 th {
-  color: var(--gold);
-  background: linear-gradient(180deg, rgba(255, 227, 157, 0.18), rgba(255, 227, 157, 0.03));
+  color: #bff7ff;
+  background: linear-gradient(180deg, rgba(34, 211, 238, 0.15), rgba(34, 211, 238, 0.035));
   font-weight: 700;
 }
 
 select, input, textarea {
   width: 100%;
-  padding: 8px;
+  padding: 11px 12px;
   margin-top: 4px;
   margin-bottom: 6px;
-  font-size: 14px;
+  font-size: 15px;
   color: var(--text);
-  border: 1px solid rgba(148, 184, 225, 0.45);
-  border-radius: 8px;
-  background: linear-gradient(180deg, rgba(7, 15, 28, 0.96), rgba(11, 22, 40, 0.78));
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.32);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
+  outline: none;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+}
+
+select:focus, input:focus, textarea:focus {
+  border-color: rgba(34, 211, 238, 0.8);
+  background: rgba(3, 12, 26, 0.68);
+  box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.12), inset 0 1px 0 rgba(255,255,255,0.05);
 }
 
 select {
@@ -224,45 +263,49 @@ label { font-size: 12px; color: #cedef4; }
 
 button {
   width: 100%;
-  padding: 10px;
-  border-radius: 9px;
-  border: 1px solid rgba(160, 207, 250, 0.88);
-  background: linear-gradient(180deg, #95d1ff 0%, #3b77b0 100%);
-  color: #f5fbff;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(34, 211, 238, 0.68);
+  background: linear-gradient(135deg, rgba(34, 211, 238, 0.22), rgba(59, 130, 246, 0.18));
+  color: #bff7ff;
   font-size: 14px;
   font-weight: 700;
-  text-shadow: 0 1px 0 rgba(11, 24, 39, 0.92);
+  text-shadow: 0 0 10px rgba(34, 211, 238, 0.34);
   cursor: pointer;
+  box-shadow: 0 0 18px rgba(34, 211, 238, 0.10), inset 0 1px 0 rgba(255,255,255,0.07);
+  transition: transform 0.16s ease, filter 0.16s ease, box-shadow 0.16s ease;
 }
 
-button:hover { filter: brightness(1.08); box-shadow: 0 4px 14px rgba(142, 202, 255, 0.32); }
+button:hover { filter: brightness(1.12); box-shadow: 0 8px 22px rgba(34, 211, 238, 0.20), inset 0 1px 0 rgba(255,255,255,0.1); transform: translateY(-1px); }
 button:active { transform: translateY(1px); }
 
 .action-main {
-  border-color: rgba(255, 228, 163, 0.85);
-  background: linear-gradient(180deg, #f6dd9f 0%, #b9802e 100%);
-  color: #1e2636;
+  border-color: rgba(103, 232, 249, 0.95);
+  background: linear-gradient(135deg, #22d3ee 0%, #2563eb 100%);
+  color: #03111f;
   text-shadow: none;
+  box-shadow: 0 14px 34px rgba(37, 99, 235, 0.30), 0 0 24px rgba(34, 211, 238, 0.20);
 }
 
 td button {
-  padding: 6px 0;
-  background: linear-gradient(180deg, #ff9ea3 0%, #bf4e58 100%);
-  border-color: rgba(255, 186, 186, 0.95);
+  padding: 8px 0;
+  background: linear-gradient(135deg, rgba(251, 113, 133, 0.22), rgba(190, 18, 60, 0.28));
+  border-color: rgba(251, 113, 133, 0.75);
+  color: #fecdd3;
 }
 
-.section { padding: 12px; margin: 12px 0; }
-.group-title { font-size: 13px; color: var(--gold); font-weight: 700; margin-bottom: 8px; letter-spacing: 0.04em; }
+.section { padding: 16px; margin: 14px 0; }
+.group-title { font-size: 14px; color: #bff7ff; font-weight: 800; margin-bottom: 10px; letter-spacing: 0.04em; text-shadow: 0 0 14px rgba(34, 211, 238, 0.22); }
 
-.buff-buttons { display: flex; gap: 6px; margin: 6px 0; flex-wrap: wrap; }
-.buff-buttons button { flex: 1; min-width: 60px; padding: 6px; font-size: 12px; }
+.buff-buttons { display: flex; gap: 8px; margin: 8px 0; flex-wrap: wrap; }
+.buff-buttons button { flex: 1; min-width: 60px; padding: 8px; font-size: 12px; }
 
 .switch-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 6px; }
 .switch {
-  background: linear-gradient(180deg, rgba(9, 17, 30, 0.95), rgba(14, 25, 42, 0.72));
-  border: 1px solid rgba(150, 187, 230, 0.35);
-  border-radius: 9px;
-  padding: 8px;
+  background: rgba(0, 0, 0, 0.24);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  padding: 10px;
   font-size: 12px;
   display: flex;
   justify-content: space-between;
@@ -277,20 +320,20 @@ td button {
 }
 
 .info { font-size: 11px; color: var(--accent); margin-bottom: 6px; }
-.result { display: grid; gap: 10px; margin-top: 10px; }
-.card { padding: 12px; }
+.result { display: grid; gap: 12px; margin-top: 12px; }
+.card { padding: 16px; }
 
 .time {
-  font-size: 28px;
+  font-size: clamp(28px, 8vw, 42px);
   text-align: center;
   font-weight: 800;
-  color: var(--gold);
-  text-shadow: 0 1px 0 #5f4319;
+  color: #ecfeff;
+  text-shadow: 0 0 22px rgba(34, 211, 238, 0.48);
 }
 
-.resources { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 13px; }
-.resource-row { display: flex; align-items: center; gap: 6px; }
-.resource-icon { width: 20px; height: 20px; object-fit: contain; border-radius: 4px; }
+.resources { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 13px; }
+.resource-row { display: flex; align-items: center; gap: 8px; padding: 8px; border-radius: 12px; background: rgba(0, 0, 0, 0.18); }
+.resource-icon { width: 22px; height: 22px; object-fit: contain; border-radius: 6px; filter: drop-shadow(0 0 8px rgba(34, 211, 238, 0.18)); }
 textarea { height: 110px; }
 
 .footer {
@@ -308,7 +351,7 @@ textarea { height: 110px; }
   width: 120px;
   height: 120px;
   background: url("https://gom-s3-user-avatar.s3.us-west-2.amazonaws.com/wp-content/uploads/2023/07/item_icon_100081.png") center/contain no-repeat;
-  opacity: 0.22;
+  opacity: 0.14;
   pointer-events: none;
   filter: drop-shadow(0 0 8px rgba(162, 210, 255, 0.5));
 }
