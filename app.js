@@ -52,12 +52,54 @@ const resourceMeta = [
   }
 ];
 
+const correctionFields = [
+  "meat","wood","coal","iron","fire_crystal","refined_fire_crystal","time_sec"
+];
+
+const dataCorrections = {
+  // Whiteout Survival Wiki values confirmed during full FC data audit.
+  "B006|601": { time_sec:186600 },
+  "B006|602": { time_sec:186600 },
+  "B006|603": { time_sec:186600 },
+  "B006|604": { time_sec:186600 },
+  "B006|700": { time_sec:186600 },
+  "B008|301": { time_sec:207360 },
+  "B008|302": { time_sec:207360 },
+  "B008|303": { time_sec:207360 },
+  "B008|304": { time_sec:207360 },
+  "B008|400": { time_sec:207360 }
+};
+
+function applyDataCorrections(rows){
+  const infantryRowsByLevel = new Map(
+    rows
+      .filter(row=>row.building_id==="B003")
+      .map(row=>[String(row.level_index),row])
+  );
+
+  return rows.map(row=>{
+    if(row.building_id==="B004" || row.building_id==="B005"){
+      const infantryRow = infantryRowsByLevel.get(String(row.level_index));
+      if(infantryRow){
+        const troopCampValues = {};
+        correctionFields.forEach(field=>{
+          troopCampValues[field] = infantryRow[field];
+        });
+        row = {...row,...troopCampValues};
+      }
+    }
+
+    const correction=dataCorrections[`${row.building_id}|${row.level_index}`];
+    return correction ? {...row,...correction} : row;
+  });
+}
+
 // =============================
 // 初期ロード
 // =============================
 async function loadData(){
   const res = await fetch("https://script.google.com/macros/s/AKfycbwCCYnfPMJaR90xVNr_9r82Je0L61XqgJfiQkXDD2zAXVh8sAtHupAQRoY92Kjl0KnJ5Q/exec");
-  buildingData = await res.json();
+  buildingData = applyDataCorrections(await res.json());
 
   initBuffUI();
   initPresetUI();
